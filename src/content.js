@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Detail from "./detail";
+// import classnames from "classnames";
 
 class Content extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Content extends Component {
     this.onChange = this.onChange.bind(this);
     this.cityFilter = this.cityFilter.bind(this);
     this.childRender = this.childRender.bind(this);
-    this.setState = this.setState.bind(this);
+    // this.setState = this.setState.bind(this);
   }
   componentDidMount() {
     axios.get(" http://api.help.bj.cn/apis/aqilist/").then(res => {
@@ -66,17 +67,45 @@ class Content extends Component {
     const { matched, matched_keys } = this.state;
 
     return (
-      <div>
-        <form onSubmit={this.getWeather}>
-          <div>
+      <div className="container">
+        <form onSubmit={this.getWeather} className="form-control">
+          <div className="input-group mb-3">
             {" "}
-            <input type="text" name="city" onChange={this.onChange} />
-            <input type="submit" value="获取天气" />
+            <input
+              type="text"
+              name="city"
+              placeholder="Enter Your City.."
+              className="form-control"
+              onChange={this.onChange}
+            />
+            <div className="input-droup-append">
+              <input
+                type="submit"
+                value="空气质量"
+                className="btn btn-sencondary btn-lg"
+              />
+            </div>
           </div>
-          {this.state.error && <span>{this.state.error}</span>}
+          {this.state.error && (
+            <div className="alert alert-danger" role="alert">
+              <span>{this.state.error}</span>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          )}
           <ul>
             {matched_keys.map((matched_key, index) => (
-              <li key={index} style={{ listStyle: "none" }}>
+              <li
+                key={index}
+                style={{ listStyle: "none" }}
+                className="list-group-item"
+              >
                 <Detail
                   matched_key={matched_key}
                   value={matched[matched_key]}
@@ -84,7 +113,7 @@ class Content extends Component {
               </li>
             ))}
           </ul>
-          <p>更新时间：{this.state.update}</p>
+          <p>数据获取时间：{this.state.update}</p>
         </form>
       </div>
     );
